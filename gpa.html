@@ -5,23 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPA Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f0e6cc;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin: 3px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-calculate {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-reset {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-add {
+            background-color: #e7e7e7;
+            color: black;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .gpa-output {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: red;
+            border: 2px solid orange;
+            color: white;
+            text-align: center;
+        }
+    </style>
     <script>
         function addRow() {
             const table = document.getElementById('gradesTable');
             const row = table.insertRow();
             row.innerHTML = `
                 <td><input type="checkbox"></td>
+                <td><input type="text" placeholder="Course Name"></td>
                 <td>
                     <select>
                         <option value="4.0">A</option>
+                        <option value="3.7">A-</option>
+                        <option value="3.3">B+</option>
                         <option value="3.0">B</option>
+                        <option value="2.7">B-</option>
+                        <option value="2.3">C+</option>
                         <option value="2.0">C</option>
+                        <option value="1.7">C-</option>
                         <option value="1.0">D</option>
                         <option value="0.0">F</option>
                     </select>
                 </td>
                 <td><input type="number" min="0" step="1" placeholder="Credits"></td>
-                <td><button onclick="deleteRow(this)">X</button></td>
+                <td><button class="btn-delete" onclick="deleteRow(this)">X</button></td>
             `;
         }
 
@@ -36,8 +113,8 @@
 
             for (const row of table.rows) {
                 const isChecked = row.cells[0].firstChild.checked;
-                const grade = parseFloat(row.cells[1].firstChild.value);
-                const credits = parseFloat(row.cells[2].firstChild.value) || 0;
+                const grade = parseFloat(row.cells[2].firstChild.value);
+                const credits = parseFloat(row.cells[3].firstChild.value) || 0;
 
                 if (isChecked) {
                     totalPoints += grade * credits;
@@ -57,25 +134,23 @@
     </script>
 </head>
 <body>
-    <header>
-        <h1>GPA Calculator</h1>
-    </header>
     <div class="container">
+        <h2>GPA Calculator</h2>
         <table id="gradesTable">
             <tr>
                 <th>Select</th>
+                <th>Course</th>
                 <th>Grade</th>
                 <th>Credits</th>
                 <th>Remove</th>
             </tr>
         </table>
-        <button onclick="addRow()">Add Row</button>
-        <button onclick="calculateGPA()">Calculate GPA</button>
-        <button onclick="resetTable()">Reset</button>
-        <p id="gpaResult"></p>
+        <button class="btn-add" onclick="addRow()">+ Add row</button>
+        <div>
+            <button class="btn-calculate" onclick="calculateGPA()">= Calculate</button>
+            <button class="btn-reset" onclick="resetTable()">✖ Reset</button>
+        </div>
+        <div class="gpa-output" id="gpaResult">GPA: --</div>
     </div>
-    <footer>
-        <p>&copy; 2024 My Portfolio</p>
-    </footer>
 </body>
 </html>
