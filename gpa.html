@@ -63,10 +63,14 @@
 
             for (const row of table.rows) {
                 const isChecked = row.cells[0].firstChild.checked;
-                const grade = parseFloat(row.cells[2].firstChild.value) || 0;
-                const credits = parseFloat(row.cells[3].firstChild.value) || 0;
+                const gradeValue = row.cells[2].firstChild.value;
+                const creditsValue = row.cells[3].firstChild.value;
 
-                if (isChecked && credits > 0) {  // Only consider valid entries
+                // Ensure valid values are parsed
+                const grade = parseFloat(gradeValue);
+                const credits = parseFloat(creditsValue);
+
+                if (isChecked && !isNaN(grade) && !isNaN(credits) && credits > 0) {
                     totalPoints += grade * credits;
                     totalCredits += credits;
                 }
