@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        function addRow() {
+            const table = document.getElementById('gradesTable');
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td>
+                    <select>
+                        <option value="4.0">A</option>
+                        <option value="3.0">B</option>
+                        <option value="2.0">C</option>
+                        <option value="1.0">D</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </td>
+                <td><input type="number" min="0" step="1" placeholder="Credits"></td>
+                <td><button onclick="deleteRow(this)">X</button></td>
+            `;
+        }
+
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function calculateGPA() {
+            const table = document.getElementById('gradesTable');
+            let totalCredits = 0, totalPoints = 0;
+
+            for (const row of table.rows) {
+                const isChecked = row.cells[0].firstChild.checked;
+                const grade = parseFloat(row.cells[1].firstChild.value);
+                const credits = parseFloat(row.cells[2].firstChild.value) || 0;
+
+                if (isChecked) {
+                    totalPoints += grade * credits;
+                    totalCredits += credits;
+                }
+            }
+
+            const gpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : 0;
+            document.getElementById('gpaResult').textContent = `GPA: ${gpa}`;
+        }
+
+        function resetTable() {
+            const table = document.getElementById('gradesTable');
+            while (table.rows.length > 1) table.deleteRow(1);
+            document.getElementById('gpaResult').textContent = '';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>GPA Calculator</h1>
+    </header>
+    <div class="container">
+        <table id="gradesTable">
+            <tr>
+                <th>Select</th>
+                <th>Grade</th>
+                <th>Credits</th>
+                <th>Remove</th>
+            </tr>
+        </table>
+        <button onclick="addRow()">Add Row</button>
+        <button onclick="calculateGPA()">Calculate GPA</button>
+        <button onclick="resetTable()">Reset</button>
+        <p id="gpaResult"></p>
+    </div>
+    <footer>
+        <p>&copy; 2024 My Portfolio</p>
+    </footer>
+</body>
+</html>
