@@ -1,8 +1,4 @@
 // Selectors
-
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
 const toDoInput = document.querySelector('.todo-input');
 const toDoBtn = document.querySelector('.todo-btn');
 const toDoList = document.querySelector('.todo-list');
